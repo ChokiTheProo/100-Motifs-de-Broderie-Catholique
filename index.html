@@ -24,11 +24,12 @@
     body { font-family: 'Manrope', sans-serif; color: #111; }
     h1, h2, h3, h4 { font-family: 'Inter', sans-serif; }
     .hero-gradient { background: linear-gradient(180deg, #F6F3EC 0%, #E8F1FF 100%); }
-    .cta-pulse { animation: pulse 2s infinite; }
+    .cta-pulse { animation: pulse 2s infinite; box-shadow: 0 12px 24px rgba(24,151,0,0.35); will-change: transform; }
     @keyframes pulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 12px 24px rgba(24,151,0,0.35); }
-      50%      { transform: scale(1.03); box-shadow: 0 16px 32px rgba(24,151,0,0.5); }
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.03); }
     }
+    @media (prefers-reduced-motion: reduce) { .cta-pulse { animation: none; } }
     .pill { border-radius: 180px; }
     .placeholder-img {
       background: repeating-linear-gradient(45deg, #f0e9d6, #f0e9d6 12px, #e6dec5 12px, #e6dec5 24px);
@@ -48,42 +49,49 @@
     @media (min-width: 768px) { .carousel-arrow { display: flex; } }
   </style>
 
-  <!-- Meta Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '2486824241743289');
-  fbq('track', 'PageView');
-  </script>
+  <!-- Meta Pixel (noscript sempre presente p/ garantir contagem sem JS) -->
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=2486824241743289&ev=PageView&noscript=1"
   /></noscript>
-  <!-- End Meta Pixel Code -->
 
-  <!-- UTMify - UTM Tracking -->
-  <script
-    src="https://cdn.utmify.com.br/scripts/utms/latest.js"
-    data-utmify-prevent-subids
-    async
-    defer
-  ></script>
-
-  <!-- UTMify - Pixel de Conversão -->
+  <!-- Rastreadores (Meta Pixel + UTMify) carregados fora do caminho crítico:
+       disparam na 1ª interação OU 2,5s após o load, o que vier primeiro. -->
   <script>
-    window.pixelId = "6a2899b0a2a0a7483b514f5d";
-    var a = document.createElement("script");
-    a.setAttribute("async", "");
-    a.setAttribute("defer", "");
-    a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-    document.head.appendChild(a);
+  (function () {
+    var fired = false;
+    function loadTracking() {
+      if (fired) return;
+      fired = true;
+
+      // Meta Pixel
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+      (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init','2486824241743289');
+      fbq('track','PageView');
+
+      // UTMify - UTM Tracking
+      var u=document.createElement('script');
+      u.src='https://cdn.utmify.com.br/scripts/utms/latest.js';
+      u.setAttribute('data-utmify-prevent-subids','');
+      u.async=true; u.defer=true;
+      document.head.appendChild(u);
+
+      // UTMify - Pixel de Conversão
+      window.pixelId='6a2899b0a2a0a7483b514f5d';
+      var p=document.createElement('script');
+      p.async=true; p.defer=true;
+      p.src='https://cdn.utmify.com.br/scripts/pixel/pixel.js';
+      document.head.appendChild(p);
+    }
+
+    var evts=['scroll','mousemove','touchstart','keydown','click'];
+    evts.forEach(function(ev){ window.addEventListener(ev, loadTracking, {passive:true, once:true}); });
+    window.addEventListener('load', function(){ setTimeout(loadTracking, 2500); });
+  })();
   </script>
-  <!-- End UTMify -->
 </head>
 <body class="bg-white antialiased">
 
