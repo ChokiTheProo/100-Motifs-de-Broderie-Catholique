@@ -8,35 +8,16 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Fontes carregadas de forma assíncrona (não bloqueiam a renderização) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@400;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@400;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@400;600;700&display=swap" /></noscript>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary:   '#1E3A5F',
-            secondary: '#EE6352',
-            success:   '#189700',
-            cream:     '#F6F3EC',
-            skyfade:   '#E8F1FF',
-            surface:   '#EFF1F5',
-          },
-          fontFamily: {
-            sans:    ['Manrope', 'sans-serif'],
-            heading: ['Inter', 'sans-serif'],
-          },
-          letterSpacing: { tightx: '-0.1px' },
-          boxShadow: {
-            soft:  '0 40px 80px rgba(217, 119, 87, 0.24)',
-            card:  '0 10px 30px rgba(30, 58, 95, 0.10)',
-            cta:   '0 12px 24px rgba(24, 151, 0, 0.35)',
-          },
-        },
-      },
-    };
-  </script>
+  <!-- Precarrega a imagem do hero (elemento de LCP) -->
+  <link rel="preload" as="image" href="variacao_dibujos_catolicos_es.webp" fetchpriority="high" />
+
+  <!-- Tailwind pré-compilado (substitui o CDN que compilava em runtime) -->
+  <link rel="stylesheet" href="tailwind.css" />
 
   <style>
     html { scroll-behavior: smooth; }
@@ -128,10 +109,11 @@
 
     <!-- Mockup du produit -->
     <div class="mt-10 w-full max-w-lg">
-      <img src="variacao_dibujos_catolicos_es.png"
+      <img src="variacao_dibujos_catolicos_es.webp"
            alt="+100 Motifs Catholiques — Collection Dévotionnelle de Broderies Sacrées"
            class="w-full h-auto rounded-2xl shadow-soft"
-           loading="eager" />
+           width="1024" height="1024"
+           loading="eager" fetchpriority="high" decoding="async" />
     </div>
 
     <a href="#oferta"
@@ -265,22 +247,22 @@
     <!-- Grille 3x2 (6 images) -->
     <div class="mt-12 max-w-5xl mx-auto px-5">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-        <img src="imagens/855191d358ea0788366f3c1b5713f3b3.jpeg"
+        <img src="imagens/855191d358ea0788366f3c1b5713f3b3.webp"
              alt="Broderie catholique — motif 1" loading="lazy"
              class="w-full aspect-square object-cover rounded-xl shadow-card border-2 border-white/20" />
-        <img src="imagens/986d5279e1fd90e39ab8a3e77f86ef9b.jpeg"
+        <img src="imagens/986d5279e1fd90e39ab8a3e77f86ef9b.webp"
              alt="Broderie catholique — motif 2" loading="lazy"
              class="w-full aspect-square object-cover rounded-xl shadow-card border-2 border-white/20" />
-        <img src="imagens/image-1.jpeg"
+        <img src="imagens/image-1.webp"
              alt="Broderie catholique — motif 3" loading="lazy"
              class="w-full aspect-square object-cover rounded-xl shadow-card border-2 border-white/20" />
-        <img src="imagens/image-2.jpeg"
+        <img src="imagens/image-2.webp"
              alt="Broderie catholique — motif 4" loading="lazy"
              class="w-full aspect-square object-cover rounded-xl shadow-card border-2 border-white/20" />
-        <img src="imagens/image-4.jpeg"
+        <img src="imagens/image-4.webp"
              alt="Broderie catholique — motif 5" loading="lazy"
              class="w-full aspect-square object-cover rounded-xl shadow-card border-2 border-white/20" />
-        <img src="imagens/855191d358ea0788366f3c1b5713f3b3.jpeg"
+        <img src="imagens/855191d358ea0788366f3c1b5713f3b3.webp"
              alt="Broderie catholique — motif 6" loading="lazy"
              class="w-full aspect-square object-cover rounded-xl shadow-card border-2 border-white/20" />
       </div>
@@ -477,10 +459,11 @@
 
         <!-- Image du produit -->
         <div class="mt-4 max-w-sm mx-auto">
-          <img src="fcf709ec-7e60-44c0-97c7-3eb8569a7ae2.png"
+          <img src="fcf709ec-7e60-44c0-97c7-3eb8569a7ae2.webp"
                alt="+100 Motifs Catholiques — Pack complet"
                class="w-full h-auto rounded-xl shadow-card"
-               loading="lazy" />
+               width="1024" height="1280"
+               loading="lazy" decoding="async" />
         </div>
 
         <h3 class="font-heading font-extrabold text-primary text-center text-2xl sm:text-3xl mt-6">
